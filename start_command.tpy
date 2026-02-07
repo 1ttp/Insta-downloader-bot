@@ -1,0 +1,46 @@
+banner = (
+    "❤️🧡💛💚🩵💙💜🤎🖤🩶🤍🩷
+"
+    "📥 <b>INSTAGRAM DOWNLOADER</b> 📥
+"
+    "🩷🤍🩶🖤🤎💜💙🩵💚💛🧡❤️"
+)
+
+keyboard = {
+    "inline_keyboard": [
+        [
+            {"text": "🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈", "url": "https://t.me/+cufWA5AHXEkxYzM1"}
+        ]
+    ]
+}
+
+Bot.sendMessage(
+    text=(
+        banner + "
+
+"
+        "👋 <b>Welcome! To GREED</b>
+"
+        "<b>Unlimited Insta Downloader Bot</b>
+
+"
+        "24×7 Active Bot
+"
+        "Daily Updates
+"
+        "Zero Error
+"
+        "Free and Easy to Use
+
+"
+        "<b>How to use?</b>
+"
+        "Just send me an Instagram reel link or post link
+
+"
+        "Long press the Link to copy
+ 👇🎈👇example link👇🎈👇"
+    ),
+    parse_mode="html",
+    reply_markup=keyboard
+)
