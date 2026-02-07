@@ -3,11 +3,11 @@ Live Demo: https://t.me/GreedDownloaderbot
 <1s Instagram Reel downloader - Deploy with Telebot Creator TPY code!
 
 # Features
-•Downloads Reels/Posts in under 1 second
-•HD quality, no watermarks
-•30s cooldown prevents spam
-•Auto-detects Instagram URLs
-•Clean UI with message deletion
+•Downloads Reels/Posts in under 1 second         
+•HD quality, no watermarks.      
+•30s cooldown prevents spam.       
+•Auto-detects Instagram URLs.    
+•Clean UI with message deletion.     
 
 # 🚀 Deployment Steps
 
