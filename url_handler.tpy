@@ -1,0 +1,96 @@
+text = message.text if message and isinstance(message.text, str) else None
+
+if not text:
+    Bot.sendMessage(
+        text="❌ Send an Instagram post or reel link.",
+        parse_mode="html"
+    )
+else:
+    pattern = r"(https?://)?(www.)?instagram.com/(p|reel|tv)/[A-Za-z0-9-_]+"
+
+    if not regex.search(pattern, text):
+        Bot.sendMessage(
+            text="❌ Invalid Instagram post or reel link.",
+            parse_mode="html"
+        )
+    else:
+        COOLDOWN = 30
+        now = time.time()
+        last = User.getData("insta_last")
+
+        if last and (now - last) < COOLDOWN:
+            left = int(COOLDOWN - (now - last))
+            Bot.sendMessage(
+                text="⏳ Please wait <b>" + str(left) + "s</b> before using again.",
+                parse_mode="html"
+            )
+        else:
+            User.saveData("insta_last", now)
+            try:
+                Bot.deleteMessage(msg.message_id)
+            except:
+                pass
+
+            wait = Bot.sendMessage(
+                text="<b>⏳ Downloading...</b>",
+                parse_mode="html"
+            )
+            wait_id = wait["message_id"]
+
+            try:
+                api_url = "https://tele-social.vercel.app/down?url=" + encodeURIComponent(text)
+                res = HTTP.get(url=api_url, timeout=25)
+
+                if not res.ok:
+                    raise Exception("Request failed")
+
+                data = res.json()
+                if not data or data.get("status") != True:
+                    raise Exception("Invalid Instagram link")
+
+                payload = data.get("data")
+                media = payload.get("media")
+                mtype = payload.get("type")
+
+                caption = "✅ <b>Downloaded successfully</b>"
+
+                keyboard = {
+                    "inline_keyboard": [
+                        [
+                            {
+                                "text": "🔓Backup🔓",
+                                "url": "https://t.me/+cufWA5AHXEkxYzM1"
+                            }
+                        ]
+                    ]
+                }
+
+                if mtype == "video" and media.get("video"):
+                    Bot.sendVideo(
+                        video=media.get("video"),
+                        caption=caption,
+                        parse_mode="html",
+                        reply_markup=keyboard
+                    )
+                elif media.get("image"):
+                    Bot.sendPhoto(
+                        photo=media.get("image"),
+                        caption=caption,
+                        parse_mode="html",
+                        reply_markup=keyboard
+                    )
+                else:
+                    raise Exception("Media not found")
+
+                try:
+                    Bot.deleteMessage(wait_id)
+                except:
+                    pass
+
+            except Exception:
+                Bot.editMessageText(
+                    message_id=wait_id,
+                    text="<b>❌ Download Failed</b>
+Please try again later or send screenshot to @greedogu.",
+                    parse_mode="html"
+                )
